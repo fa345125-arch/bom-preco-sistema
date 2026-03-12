@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from backend.routers import funcionarios
-from backend.routers import ponto
+from backend.routers import pontos
 from backend.routers import financeiro
 from backend.routers import ferias
 from backend.routers import auth
