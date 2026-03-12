@@ -8,7 +8,7 @@ from backend.routers import auth
 app = FastAPI(title="Sistema Bom Preço")
 
 app.include_router(funcionarios.router)
-app.include_router(ponto.router)
+app.include_router(pontos.router)
 app.include_router(financeiro.router)
 app.include_router(ferias.router)
 app.include_router(auth.router)
