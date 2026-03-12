@@ -1,3 +1,4 @@
+from backend.security import gerar_hash_senha, verificar_senha
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database.database import SessionLocal
