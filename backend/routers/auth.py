@@ -1,3 +1,4 @@
+from backend.auth_jwt import criar_token
 from backend.security import gerar_hash_senha, verificar_senha
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
