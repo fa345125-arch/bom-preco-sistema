@@ -20,11 +20,12 @@ def get_db():
 @router.post("/register")
 def register(user: UsuarioCreate, db: Session = Depends(get_db)):
     dados = user.dict()
-dados["senha"] = gerar_hash_senha(dados["senha"])
+    dados["senha"] = gerar_hash_senha(dados["senha"])
 
-novo = Usuario(**dados)
+    novo = Usuario(**dados)
     db.add(novo)
     db.commit()
+
     return {"status": "usuario criado"}
 
 
@@ -38,7 +39,12 @@ def login(user: UsuarioLogin, db: Session = Depends(get_db)):
     if not usuario:
         return {"erro": "usuario não encontrado"}
 
-    if usuario.senha != user.senha:
+    if not verificar_senha(user.senha, usuario.senha):
         return {"erro": "senha incorreta"}
 
-    return {"status": "login realizado", "usuario": usuario.username}
+    token = criar_token({"sub": usuario.username})
+
+    return {
+        "access_token": token,
+        "token_type": "bearer"
+    }
