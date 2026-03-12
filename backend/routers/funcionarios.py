@@ -1,10 +1,7 @@
-from fastapi import FastAPI
-from backend.routers import funcionarios
+from fastapi import APIRouter
 
-app = FastAPI(title="Sistema Bom Preço")
+router = APIRouter()
 
-app.include_router(funcionarios.router)
-
-@app.get("/")
-def home():
-    return {"mensagem": "Sistema interno Bom Preço funcionando"}
+@router.get("/funcionarios")
+def listar_funcionarios():
+    return {"mensagem": "Lista de funcionários"}
