@@ -1,25 +1,22 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from backend.schemas.funcionario import FuncionarioCreate
 
 router = APIRouter()
 
-# modelo de dados
-class Funcionario(BaseModel):
-    nome: str
-    cargo: str
-    salario: float
+funcionarios = []
 
-
-# listar funcionarios
-@router.get("/funcionarios")
-def listar_funcionarios():
-    return {"mensagem": "Lista de funcionários"}
-
-
-# cadastrar funcionario
 @router.post("/funcionarios")
-def criar_funcionario(funcionario: Funcionario):
+def criar_funcionario(funcionario: FuncionarioCreate):
+
+    funcionarios.append(funcionario)
+
     return {
-        "mensagem": "Funcionário criado",
+        "mensagem": "Funcionário cadastrado",
         "dados": funcionario
     }
+
+
+@router.get("/funcionarios")
+def listar_funcionarios():
+
+    return funcionarios
