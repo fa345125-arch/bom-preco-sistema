@@ -3,7 +3,7 @@ from backend.security import gerar_hash_senha, verificar_senha
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database.database import SessionLocal
-from models.usuario import Usuario
+from backend.models.usuario import Usuario
 from backend.schemas.usuario import UsuarioCreate, UsuarioLogin
 
 router = APIRouter(prefix="/auth", tags=["Auth"])
