@@ -18,7 +18,10 @@ def get_db():
 
 @router.post("/register")
 def register(user: UsuarioCreate, db: Session = Depends(get_db)):
-    novo = Usuario(**user.dict())
+    dados = user.dict()
+dados["senha"] = gerar_hash_senha(dados["senha"])
+
+novo = Usuario(**dados)
     db.add(novo)
     db.commit()
     return {"status": "usuario criado"}
