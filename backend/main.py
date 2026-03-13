@@ -4,6 +4,8 @@ from backend.routers import pontos
 from backend.routers import financeiro
 from backend.routers import ferias
 from backend.routers import auth
+from backend.routers import folha
+
 
 app = FastAPI(title="Sistema Bom Preço")
 
