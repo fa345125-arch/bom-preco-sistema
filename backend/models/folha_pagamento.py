@@ -18,6 +18,10 @@ class FolhaPagamento(Base):
     hora_extra_60 = Column(Float)
     hora_extra_100 = Column(Float)
 
+    adicionais = Column(Float)
+
     descontos = Column(Float)
+
+    inss = Column(Float)
 
     liquido = Column(Float)
