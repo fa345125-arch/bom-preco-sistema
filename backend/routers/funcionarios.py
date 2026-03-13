@@ -12,7 +12,7 @@ def listar_funcionarios(db: Session = Depends(get_db)):
     return db.query(Funcionario).all()
 
 
-# NOVA ROTA — ATUALIZAR FUNCIONÁRIO
+# ATUALIZAR FUNCIONÁRIO
 @router.put("/{funcionario_id}")
 def atualizar_funcionario(funcionario_id: int, dados: FuncionarioCreate, db: Session = Depends(get_db)):
 
@@ -32,7 +32,10 @@ def atualizar_funcionario(funcionario_id: int, dados: FuncionarioCreate, db: Ses
     db.commit()
 
     return {"mensagem": "funcionário atualizado"}
-    @router.put("/desligar/{funcionario_id}")
+
+
+# DESLIGAR FUNCIONÁRIO
+@router.put("/desligar/{funcionario_id}")
 def desligar_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
 
     funcionario = db.query(Funcionario).filter(
@@ -46,4 +49,4 @@ def desligar_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
 
     db.commit()
 
-    return {"mensagem": "funcionário desligado"}
+    return {"mensagem": "funcionário desligado"}"}
