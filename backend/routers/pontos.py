@@ -40,6 +40,7 @@ def registrar_ponto(funcionario_id: int, tipo: str, db: Session = Depends(get_db
 def listar_pontos(db: Session = Depends(get_db)):
 
     return db.query(Ponto).all()
+    
     @router.get("/funcionario/{funcionario_id}")
 def relatorio_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
 
