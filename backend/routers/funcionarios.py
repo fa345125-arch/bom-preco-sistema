@@ -32,3 +32,18 @@ def atualizar_funcionario(funcionario_id: int, dados: FuncionarioCreate, db: Ses
     db.commit()
 
     return {"mensagem": "funcionário atualizado"}
+    @router.put("/desligar/{funcionario_id}")
+def desligar_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
+
+    funcionario = db.query(Funcionario).filter(
+        Funcionario.id == funcionario_id
+    ).first()
+
+    if not funcionario:
+        return {"erro": "funcionário não encontrado"}
+
+    funcionario.status = "desligado"
+
+    db.commit()
+
+    return {"mensagem": "funcionário desligado"}
