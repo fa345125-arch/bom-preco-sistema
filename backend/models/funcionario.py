@@ -1,12 +1,19 @@
-from sqlalchemy import Column, Integer, String, Float
-from database.database import Base
+from pydantic import BaseModel
+from datetime import date
+
+class FuncionarioCreate(BaseModel):
+
+    nome: str
+    cargo: str
+    departamento: str
+    salario: float
+    data_admissao: date
 
 
-class Funcionario(Base):
-    __tablename__ = "funcionarios"
+class FuncionarioResponse(FuncionarioCreate):
 
-    id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String)
-    cargo = Column(String)
-    salario = Column(Float)
-    status = Column(String)
+    id: int
+    status: str
+
+    class Config:
+        orm_mode = True
