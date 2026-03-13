@@ -40,3 +40,26 @@ def registrar_ponto(funcionario_id: int, tipo: str, db: Session = Depends(get_db
 def listar_pontos(db: Session = Depends(get_db)):
 
     return db.query(Ponto).all()
+    @router.get("/funcionario/{funcionario_id}")
+def relatorio_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
+
+    registros = db.query(Ponto).filter(
+        Ponto.funcionario_id == funcionario_id
+    ).all()
+
+    resultado = []
+
+    for r in registros:
+
+        horas = None
+
+        if r.entrada and r.saida:
+            horas = (r.saida - r.entrada).total_seconds() / 3600
+
+        resultado.append({
+            "entrada": r.entrada,
+            "saida": r.saida,
+            "horas_trabalhadas": horas
+        })
+
+    return resultado
