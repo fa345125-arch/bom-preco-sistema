@@ -1,30 +1,59 @@
 import streamlit as st
 import requests
 
-st.title("Registro de Ponto")
+API = "https://bom-preco-sistema.onrender.com"
 
-funcionario_id = st.number_input("ID do funcionário")
+st.title("Sistema Bom Preço")
 
-tipo = st.selectbox(
-    "Tipo de registro",
-    [
-        "entrada",
-        "inicio_intervalo",
-        "fim_intervalo",
-        "saida"
-    ]
+menu = st.sidebar.selectbox(
+    "Menu",
+    ["Dashboard", "Funcionários"]
 )
 
-if st.button("Registrar ponto"):
+# DASHBOARD
+if menu == "Dashboard":
 
-    dados = {
-        "funcionario_id": funcionario_id,
-        "tipo": tipo
-    }
+    st.header("Visão Geral")
 
-    resposta = requests.post(
-        "http://localhost:8000/ponto",
-        json=dados
-    )
+    res = requests.get(f"{API}/funcionarios")
 
-    st.success("Ponto registrado com sucesso")
+    if res.status_code == 200:
+        funcionarios = res.json()
+
+        st.metric(
+            label="Total de Funcionários",
+            value=len(funcionarios)
+        )
+
+
+# FUNCIONARIOS
+if menu == "Funcionários":
+
+    st.header("Cadastro de Funcionário")
+
+    nome = st.text_input("Nome")
+    cargo = st.text_input("Cargo")
+    salario = st.number_input("Salário")
+
+    if st.button("Cadastrar"):
+
+        dados = {
+            "nome": nome,
+            "cargo": cargo,
+            "salario": salario
+        }
+
+        res = requests.post(
+            f"{API}/funcionarios",
+            json=dados
+        )
+
+        if res.status_code == 200:
+            st.success("Funcionário cadastrado")
+
+    st.subheader("Lista de Funcionários")
+
+    res = requests.get(f"{API}/funcionarios")
+
+    if res.status_code == 200:
+        st.table(res.json())
