@@ -59,3 +59,21 @@ def folha_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
     return db.query(FolhaPagamento).filter(
         FolhaPagamento.funcionario_id == funcionario_id
     ).all()
+    
+    @router.get("/recibo/{folha_id}")
+def gerar_recibo_folha(folha_id: int, db: Session = Depends(get_db)):
+
+    folha = db.query(FolhaPagamento).filter(
+        FolhaPagamento.id == folha_id
+    ).first()
+
+    if not folha:
+        return {"erro": "folha não encontrada"}
+
+    funcionario = db.query(Funcionario).filter(
+        Funcionario.id == folha.funcionario_id
+    ).first()
+
+    arquivo = gerar_recibo(folha, funcionario)
+
+    return {"recibo_gerado": arquivo}
