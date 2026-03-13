@@ -4,6 +4,8 @@ from backend.services.calculo_folha import calcular_folha
 from database.database import SessionLocal
 from backend.models.folha_pagamento import FolhaPagamento
 from backend.schemas.folha_pagamento import FolhaCreate
+from backend.services.recibo_pdf import gerar_recibo
+from backend.models.funcionario import Funcionario
 
 router = APIRouter(prefix="/folha", tags=["Folha"])
 
