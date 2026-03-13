@@ -4,6 +4,7 @@ from datetime import datetime
 
 from database.database import SessionLocal
 from backend.models.ponto import Ponto
+from analytics.compliance import analisar_jornada
 
 router = APIRouter(prefix="/ponto", tags=["Ponto"])
 
