@@ -1,21 +1,41 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 from datetime import datetime
 
-router = APIRouter()
+from database.database import SessionLocal
+from backend.models.ponto import Ponto
 
-class RegistroPonto(BaseModel):
-    funcionario_id: int
-    tipo: str
+router = APIRouter(prefix="/ponto", tags=["Ponto"])
 
-@router.post("/ponto")
-def registrar_ponto(registro: RegistroPonto):
 
-    data_hora = datetime.now()
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router.post("/")
+def registrar_ponto(funcionario_id: int, tipo: str, db: Session = Depends(get_db)):
+
+    registro = Ponto(
+        funcionario_id=funcionario_id,
+        tipo=tipo,
+        data_hora=datetime.now()
+    )
+
+    db.add(registro)
+    db.commit()
 
     return {
         "mensagem": "Ponto registrado",
-        "funcionario": registro.funcionario_id,
-        "tipo": registro.tipo,
-        "data_hora": data_hora
+        "funcionario": funcionario_id,
+        "tipo": tipo
     }
+
+
+@router.get("/")
+def listar_pontos(db: Session = Depends(get_db)):
+
+    return db.query(Ponto).all()
