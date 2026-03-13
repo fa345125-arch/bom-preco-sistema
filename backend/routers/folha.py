@@ -1,18 +1,34 @@
-from fastapi import APIRouter
-from backend.services.folha_pdf import gerar_recibo
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
+
+from database.database import SessionLocal
+from backend.models.folha_pagamento import FolhaPagamento
+from backend.schemas.folha_pagamento import FolhaCreate
 
 router = APIRouter(prefix="/folha", tags=["Folha"])
 
 
-@router.get("/recibo/{nome}")
-def gerar(nome: str):
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
-    funcionario = {
-        "nome": nome,
-        "salario": 5000,
-        "liquido": 4500
-    }
 
-    arquivo = gerar_recibo(funcionario)
+@router.post("/")
+def criar_folha(dados: FolhaCreate, db: Session = Depends(get_db)):
 
-    return {"arquivo": arquivo}
+    folha = FolhaPagamento(**dados.dict())
+
+    db.add(folha)
+    db.commit()
+    db.refresh(folha)
+
+    return folha
+
+
+@router.get("/")
+def listar_folhas(db: Session = Depends(get_db)):
+
+    return db.query(FolhaPagamento).all()
