@@ -50,3 +50,10 @@ def criar_folha(dados: FolhaCreate, db: Session = Depends(get_db)):
 def listar_folhas(db: Session = Depends(get_db)):
 
     return db.query(FolhaPagamento).all()
+    
+@router.get("/funcionario/{funcionario_id}")
+def folha_funcionario(funcionario_id: int, db: Session = Depends(get_db)):
+
+    return db.query(FolhaPagamento).filter(
+        FolhaPagamento.funcionario_id == funcionario_id
+    ).all()
